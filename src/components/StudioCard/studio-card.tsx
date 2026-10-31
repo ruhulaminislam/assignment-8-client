@@ -6,13 +6,18 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 export type Studio = {
   /** Maps to MongoDB `_id` once fetched from the API */
-  id: string
+  _id: string
   title: string
-  category: string
-  image: string
-  pricePerHour: number
-  rating: number
+  rate: string
+  deposit: string
+  capacity: string
   location: string
+  overview: string
+  category: string
+  amenities: string[]
+  imageUrl: string
+  username: string
+  useremail: string
 }
 
 function StudioCard({ studio }: { studio: Studio }) {
@@ -20,7 +25,7 @@ function StudioCard({ studio }: { studio: Studio }) {
     <Card className="group flex flex-col overflow-hidden p-0 ring-1 ring-border transition-shadow hover:shadow-lg">
       <div className="relative aspect-[4/3] w-full overflow-hidden">
         <Image
-          src={studio.image}
+          src={studio.imageUrl}
           alt={studio.title}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -37,7 +42,7 @@ function StudioCard({ studio }: { studio: Studio }) {
           className="absolute top-3 right-3 gap-1 bg-background/90 text-foreground backdrop-blur-md"
         >
           <Star className="size-3 fill-[#F4A340] text-[#F4A340]" />
-          {studio.rating.toFixed(1)}
+          {studio?.rating?.toFixed(1)}
         </Badge>
       </div>
 
@@ -50,7 +55,7 @@ function StudioCard({ studio }: { studio: Studio }) {
           {studio.location}
         </p>
         <p className="mt-auto pt-2 text-lg font-semibold text-[#6D4AFF]">
-          ${studio.pricePerHour}
+          ${studio.rate}
           <span className="text-sm font-normal text-muted-foreground"> / hr</span>
         </p>
       </CardContent>

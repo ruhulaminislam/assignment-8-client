@@ -35,7 +35,7 @@ import { authClient } from "@/lib/auth-client"
 
 const links = [
   { label: "Home", href: "/" },
-  { label: "Explore Studios", href: "/studios" },
+  { label: "Explore Studios", href: "/studios/All-studios" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "About Us", href: "#about-us" },
 ]
@@ -155,9 +155,9 @@ export function Navbar() {
                       <LayoutDashboard className="text-muted-foreground" />
                       Dashboard
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="gap-2.5 px-2 py-2 text-[15px] focus:bg-[#6D4AFF]/10 focus:text-[#6D4AFF] [&>svg]:transition-colors [&>svg]:group-focus/dropdown-menu-item:text-[#6D4AFF]">
+                    <DropdownMenuItem  className="gap-2.5 px-2 py-2 text-[15px] focus:bg-[#6D4AFF]/10 focus:text-[#6D4AFF] [&>svg]:transition-colors [&>svg]:group-focus/dropdown-menu-item:text-[#6D4AFF]">
                       <PlusCircle className="text-muted-foreground" />
-                      Add New Studio
+                      <Link href="/studios/new"> Add New Studio</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="gap-2.5 px-2 py-2 text-[15px] focus:bg-[#6D4AFF]/10 focus:text-[#6D4AFF] [&>svg]:transition-colors [&>svg]:group-focus/dropdown-menu-item:text-[#6D4AFF]">
                       <Building2 className="text-muted-foreground" />
