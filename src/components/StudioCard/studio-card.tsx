@@ -3,6 +3,7 @@ import { MapPin, Star } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import Link from "next/link"
 
 export type Studio = {
   /** Maps to MongoDB `_id` once fetched from the API */
@@ -42,7 +43,7 @@ function StudioCard({ studio }: { studio: Studio }) {
           className="absolute top-3 right-3 gap-1 bg-background/90 text-foreground backdrop-blur-md"
         >
           <Star className="size-3 fill-[#F4A340] text-[#F4A340]" />
-          {studio?.rating?.toFixed(1)}
+          {4.5}
         </Badge>
       </div>
 
@@ -61,9 +62,9 @@ function StudioCard({ studio }: { studio: Studio }) {
       </CardContent>
 
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full bg-[#6D4AFF] text-white hover:bg-[#5A3BD9]">
+      <Link href={`/studios/All-studios/${studio._id}`}>  <Button className="w-full bg-[#6D4AFF] text-white hover:bg-[#5A3BD9]">
           View Details
-        </Button>
+        </Button></Link>
       </CardFooter>
     </Card>
   )

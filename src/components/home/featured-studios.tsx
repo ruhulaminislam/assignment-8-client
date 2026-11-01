@@ -4,64 +4,66 @@ import { StudioCard, type Studio } from "@/components/StudioCard/studio-card"
  * Dummy data shaped like a future MongoDB API response.
  * Replace this array with fetched data when the API is connected.
  */
-const featuredStudios: Studio[] = [
-  {
-    _id: "65f1a2b3c4d5e6f7a8b9c0d1",
-    title: "Lumen Photography Studio",
-    category: "Photography",
-    imageUrl: "/image/hero/kobu-agency-O8AtzoQcnY4-unsplash.jpg",
-   rate: 45,
-    rating: 4.9,
-    location: "Brooklyn, New York",
-  },
-  {
-    _id: "65f1a2b3c4d5e6f7a8b9c0d2",
-    title: "Echo Wave Recording Room",
-    category: "Music",
-    imageUrl: "/image/hero/studio-lego-EYQ6vraGu_I-unsplash.jpg",
-    rate: 60,
-    rating: 4.8,
-    location: "Austin, Texas",
-  },
-  {
-    _id: "65f1a2b3c4d5e6f7a8b9c0d3",
-    title: "Signal Talk Podcast Suite",
-    category: "Podcast",
-    imageUrl: "/image/hero/rodrigo-rodrigues-wolf-r-t-XlKnIuk85y8-unsplash.jpg",
-    rate: 35,
-    rating: 4.7,
-    location: "Los Angeles, California",
-  },
-  {
-    _id: "65f1a2b3c4d5e6f7a8b9c0d4",
-    title: "Golden Hour Photo Loft",
-    category: "Photography",
-    imageUrl: "/image/hero/kobu-agency-O8AtzoQcnY4-unsplash.jpg",
-   rate: 50,
-    rating: 4.6,
-    location: "Seattle, Washington",
-  },
-  {
-    _id: "65f1a2b3c4d5e6f7a8b9c0d5",
-    title: "Analog Vibes Music Room",
-    category: "Music",
-    imageUrl: "/image/hero/studio-lego-EYQ6vraGu_I-unsplash.jpg",
-    rate: 55,
-    rating: 5,
-    location: "Nashville, Tennessee",
-  },
-  {
-    _id: "65f1a2b3c4d5e6f7a8b9c0d6",
-    title: "Prime Cast Podcast Studio",
-    category: "Podcast",
-    imageUrl: "/image/hero/rodrigo-rodrigues-wolf-r-t-XlKnIuk85y8-unsplash.jpg",
-   rate: 40,
-    rating: 4.5,
-    location: "Chicago, Illinois",
-  },
-]
+// const featuredStudios: Studio[] = [
+//   {
+//     _id: "65f1a2b3c4d5e6f7a8b9c0d1",
+//     title: "Lumen Photography Studio",
+//     category: "Photography",
+//     imageUrl: "/image/hero/kobu-agency-O8AtzoQcnY4-unsplash.jpg",
+//    rate: 45,
+//     rating: 4.9,
+//     location: "Brooklyn, New York",
+//   },
+//   {
+//     _id: "65f1a2b3c4d5e6f7a8b9c0d2",
+//     title: "Echo Wave Recording Room",
+//     category: "Music",
+//     imageUrl: "/image/hero/studio-lego-EYQ6vraGu_I-unsplash.jpg",
+//     rate: 60,
+//     rating: 4.8,
+//     location: "Austin, Texas",
+//   },
+//   {
+//     _id: "65f1a2b3c4d5e6f7a8b9c0d3",
+//     title: "Signal Talk Podcast Suite",
+//     category: "Podcast",
+//     imageUrl: "/image/hero/rodrigo-rodrigues-wolf-r-t-XlKnIuk85y8-unsplash.jpg",
+//     rate: 35,
+//     rating: 4.7,
+//     location: "Los Angeles, California",
+//   },
+//   {
+//     _id: "65f1a2b3c4d5e6f7a8b9c0d4",
+//     title: "Golden Hour Photo Loft",
+//     category: "Photography",
+//     imageUrl: "/image/hero/kobu-agency-O8AtzoQcnY4-unsplash.jpg",
+//    rate: 50,
+//     rating: 4.6,
+//     location: "Seattle, Washington",
+//   },
+//   {
+//     _id: "65f1a2b3c4d5e6f7a8b9c0d5",
+//     title: "Analog Vibes Music Room",
+//     category: "Music",
+//     imageUrl: "/image/hero/studio-lego-EYQ6vraGu_I-unsplash.jpg",
+//     rate: 55,
+//     rating: 5,
+//     location: "Nashville, Tennessee",
+//   },
+//   {
+//     _id: "65f1a2b3c4d5e6f7a8b9c0d6",
+//     title: "Prime Cast Podcast Studio",
+//     category: "Podcast",
+//     imageUrl: "/image/hero/rodrigo-rodrigues-wolf-r-t-XlKnIuk85y8-unsplash.jpg",
+//    rate: 40,
+//     rating: 4.5,
+//     location: "Chicago, Illinois",
+//   },
+// ]
 
-export function FeaturedStudios() {
+export async function FeaturedStudios() {
+    const res=await fetch("http://localhost:5000/featured-studios")
+    const featuredStudios:TStudio[] = await res.json()
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="flex flex-col items-start gap-2">
