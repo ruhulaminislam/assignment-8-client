@@ -5,6 +5,7 @@ type StudioCategory = {
   image: string
   /** Value passed as ?category= in the /studios URL */
   slug: string
+   catategory: string
 }
 
 /**
@@ -16,26 +17,31 @@ const studioCategories: StudioCategory[] = [
     name: "Photo Studios",
     image: "/image/categories/photo-studios.jpg",
     slug: "photo",
+    catategory: "Photo Studio",
   },
   {
     name: "Sound Stages",
     image: "/image/categories/sound-stage.jpg",
     slug: "sound-stage",
+    catategory:"Film Stage"
   },
   {
     name: "Podcast Rooms",
     image: "/image/categories/podcast-rooms.jpg",
     slug: "podcast",
+    catategory:"Podcast Lounge"
   },
   {
     name: "Music Suites",
     image: "/image/categories/music-suites.jpg",
     slug: "music",
+    catategory:"Music Suite"
   },
   {
     name: "Art Workshops",
     image: "/image/categories/art-workshops.jpg",
     slug: "art",
+    catategory:"Workshop"
   },
 ]
 
@@ -58,7 +64,7 @@ export function StudioCategories() {
             key={category.slug}
             name={category.name}
             image={category.image}
-            href={`/studios?category=${category.slug}`}
+            href={`/studios/All-studios?category=${encodeURIComponent(category.catategory)}`}
             className="w-44 md:w-auto"
           />
         ))}

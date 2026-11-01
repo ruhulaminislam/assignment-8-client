@@ -1,4 +1,5 @@
 import { StudioCard, type Studio } from "@/components/StudioCard/studio-card"
+import { TStudio } from "@/lib/studios"
 
 /**
  * Dummy data shaped like a future MongoDB API response.

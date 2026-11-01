@@ -1,68 +1,200 @@
-"use client"
-import { StudioCard } from '@/components/StudioCard/studio-card';
-import { TStudio } from '@/lib/studios';
-import React, { useState } from 'react'
+"use client";
 
-const StudiosFilter = ({allStudios }:{allStudios:TStudio[]}) => {
-const [search, setSearch] = useState("");
-const [category, setCategory] = useState("All");
-const [sort, setSort] = useState("");
-const AllStudiosFiltered=allStudios.filter((studio)=>{
-      const matchSearch =
-    studio.title.toLowerCase().includes(search.trim().toLowerCase()) ||
-    studio.location.toLowerCase().includes(search.trim().toLowerCase());
-    const matchCategory = category === "All" || studio.category === category;
+import { useState } from "react";
+import { Search, Filter } from "lucide-react";
 
-  return matchSearch && matchCategory;
-})
-const sortedStudios = [...AllStudiosFiltered];
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
-if (sort === "low") {
-  sortedStudios.sort(
-    (a, b) => Number(a.rate) - Number(b.rate)
+import { StudioCard } from "@/components/StudioCard/studio-card";
+import { TStudio } from "@/lib/studios";
+import { useRouter, useSearchParams } from "next/navigation";
+
+/* Category options shown as browse-by-category buttons. */
+const categories = [
+  "All",
+  "Photo Studio",
+  "Film Stage",
+  "Podcast Lounge",
+  "Music Suite",
+  "Workshop",
+];
+
+/* Sort options shown in the compact sorting dropdown. */
+const sortOptions = [
+  { value: "", label: "Default Sorting" },
+  { value: "low", label: "Price: Low to High" },
+  { value: "high", label: "Price: High to Low" },
+];
+
+/**
+ * Explore Studios page — search, browse by category, sort, and responsive card grid.
+ * Frontend only. All filtering and sorting happen client-side.
+ */
+export default function StudiosFilter({
+  allStudios,
+  initialCategory,
+}: {
+  allStudios: TStudio[];
+  initialCategory: string;
+}) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState(initialCategory || "All");
+  const [sort, setSort] = useState("");
+
+  // --- Filtering (re-runs on every render) ---
+  const filteredStudios = allStudios.filter((studio) => {
+    const query = search.trim().toLowerCase();
+    const matchesSearch =
+      query === "" ||
+      studio.title.toLowerCase().includes(query) ||
+      studio.location.toLowerCase().includes(query);
+
+    const matchesCategory = category === "All" || studio.category === category;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  // --- Sorting (re-runs on every render) ---
+  const sortedStudios = [...filteredStudios];
+
+  if (sort === "low") {
+    sortedStudios.sort((a, b) => Number(a.rate) - Number(b.rate));
+  } else if (sort === "high") {
+    sortedStudios.sort((a, b) => Number(b.rate) - Number(a.rate));
+  }
+
+  const resultCount = sortedStudios.length;
+
+  const handleCategoryClick = (value: string) => {
+    setCategory(value);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (value === "All") {
+      params.delete("category");
+    } else {
+      params.set("category", value);
+    }
+
+    const query = params.toString();
+
+    router.push(
+      query ? `/studios/All-studios?${query}` : "/studios/All-studios"
+    );
+  };
+
+  const handleSortChange = (value: string | null) => {
+    if (value === null) return;
+    setSort(value);
+  };
+
+  return (
+    <section
+      className="min-h-screen bg-[#F8F7FC] py-10"
+      style={{ backgroundColor: "#F8F7FC" }}
+    >
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* ---------- Search bar ---------- */}
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search studios by name or location..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            className="h-12 w-full pl-12 text-base"
+          />
+        </div>
+
+        {/* ---------- Browse by category ---------- */}
+        <div className="mt-6">
+          <h2 className="mb-3 text-sm font-semibold text-foreground">
+            Browse by Category
+          </h2>
+          <div className="flex flex-wrap gap-2 sm:gap-3">
+            {categories.map((cat) => {
+              const isActive = category === cat;
+              return (
+                <Button
+                  key={cat}
+                  variant={isActive ? "default" : "outline"}
+                  onClick={() => handleCategoryClick(cat)}
+                  className={cn(
+                    "h-9 rounded-lg px-4 text-sm font-medium transition-all",
+                    isActive
+                      ? "bg-[#6D4AFF] text-white shadow-[0_4px_14px_rgba(109,74,255,0.35)] hover:bg-[#5A3BD9]"
+                      : "border-border bg-white text-muted-foreground hover:border-[#6D4AFF]/40 hover:text-[#6D4AFF]"
+                  )}
+                >
+                  {cat}
+                </Button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ---------- Available Studios heading + sorting dropdown ---------- */}
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-xl font-semibold tracking-tight">
+              Available Studios
+            </h2>
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              {resultCount} studio{resultCount === 1 ? "" : "s"} found
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Filter className="size-4 text-muted-foreground" />
+            <Select value={sort} onValueChange={handleSortChange}>
+              <SelectTrigger className="h-9 w-44 rounded-lg border-border bg-white text-sm">
+                <SelectValue placeholder="Default Sorting" />
+              </SelectTrigger>
+              <SelectContent>
+                {sortOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* ---------- Studio cards grid ---------- */}
+        <div className="mt-6">
+          {sortedStudios.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-[#6D4AFF]/10">
+                <Search className="size-8 text-[#6D4AFF]" />
+              </div>
+              <h3 className="text-lg font-semibold">No studios found</h3>
+              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+                Try adjusting your search or category filter to find what you
+                are looking for.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {sortedStudios.map((studio) => (
+                <StudioCard key={studio?._id} studio={studio} />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
-
-if (sort === "high") {
-  sortedStudios.sort(
-    (a, b) => Number(b.rate) - Number(a.rate)
-  );}
-  return (
-    <div>
- <input
-  type="text"
-  placeholder="Search studios..."
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-/>
-<select
-  value={category}
-  onChange={(e) => setCategory(e.target.value)}
->
-  <option value="All">All Studios</option>
-  <option value="Photo Studio">Photo Studios</option>
-  <option value="Film Stage">Film Stage</option>
-  <option value="Podcast Lounge">Podcast Lounge</option>
-  <option value="Music Suite">Music Suite</option>
-  <option value="Workshop">Workshop</option>
-</select>
-<select
-  value={sort}
-  onChange={(e) => setSort(e.target.value)}
->
-  <option value="">Default Sorting</option>
-  <option value="low">Price: Low to High</option>
-  <option value="high">Price: High to Low</option>
-</select>
-       <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-     <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {sortedStudios.map((studio) => (
-          <StudioCard key={studio?._id} studio={studio} />
-        ))}
-      </div>
-      </section>
-    </div>
-  )
-}
-
-export default StudiosFilter
