@@ -165,7 +165,7 @@ export function Navbar() {
                     </DropdownMenuItem>
                     <DropdownMenuItem className="gap-2.5 px-2 py-2 text-[15px] focus:bg-[#6D4AFF]/10 focus:text-[#6D4AFF] [&>svg]:transition-colors [&>svg]:group-focus/dropdown-menu-item:text-[#6D4AFF]">
                       <CalendarCheck className="text-muted-foreground" />
-                      My Bookings
+                     <Link href="/My-bookings"> My Bookings</Link>
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator className="bg-[#6D4AFF]/10" />
