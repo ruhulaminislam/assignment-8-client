@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,8 +8,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+
 import {
   MapPin,
   Star,
@@ -26,11 +29,11 @@ import {
   User,
   Mail,
 } from "lucide-react";
+
 import type { TStudio } from "@/lib/studios";
 import { StudioGallery } from "./StudioGallery";
 import { BookingModal } from "./BookingModal";
 
-/* ---------- Demo data (MongoDB has no rating/reviews fields) ---------- */
 
 const demoRating = {
   average: 4.8,
@@ -61,48 +64,31 @@ const demoReviews = [
   },
 ];
 
-/* ---------- Amenity icon mapping ---------- */
 
-const amenityIcons: Record<string, React.ComponentType<{ className?: string }>> =
-  {
-    "Wi-Fi": Wifi,
-    "Air Conditioning": Snowflake,
-    Parking: Car,
-    "Lighting Equipment": Lightbulb,
-    "Soundproof Room": VolumeX,
-    Projector: Projector,
-  };
+function AmenityIcon({ name }: { name: string }) {
+  if (name === "Wi-Fi") return <Wifi className="size-4 text-[#6D4AFF]" />;
+  if (name === "Air Conditioning")
+    return <Snowflake className="size-4 text-[#6D4AFF]" />;
+  if (name === "Parking") return <Car className="size-4 text-[#6D4AFF]" />;
+  if (name === "Lighting Equipment")
+    return <Lightbulb className="size-4 text-[#6D4AFF]" />;
+  if (name === "Soundproof Room")
+    return <VolumeX className="size-4 text-[#6D4AFF]" />;
+  if (name === "Projector")
+    return <Projector className="size-4 text-[#6D4AFF]" />;
 
-function SpecItem({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[#6D4AFF]/10">
-        <Icon className="size-5 text-[#6D4AFF]" />
-      </span>
-      <div className="min-w-0">
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className="truncate text-sm font-semibold text-foreground">{value}</p>
-      </div>
-    </div>
-  );
+  return <Tag className="size-4 text-[#6D4AFF]" />;
 }
+
 
 function Stars({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map((star) => (
+      {[1, 2, 3, 4, 5].map((number) => (
         <Star
-          key={star}
+          key={number}
           className={
-            star <= Math.round(rating)
+            number <= Math.round(rating)
               ? "size-4 fill-[#F4A340] text-[#F4A340]"
               : "size-4 text-border"
           }
@@ -117,20 +103,24 @@ export default async function DetailsPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+
   const { id } = await params;
 
+
   let studio: TStudio | null = null;
+
   try {
-    const res = await fetch(`http://localhost:5000/studios/${id}`);
-    if (res.ok) {
-      const text = await res.text();
-      studio = text ? JSON.parse(text) : null;
+    const response = await fetch(`http://localhost:5000/studios/${id}`);
+
+    if (response.ok) {
+      studio = await response.json();
     }
-  } catch {
-    studio = null;
+  } catch (error) {
+    console.log("Studio data could not be loaded:", error);
   }
 
-  if (!studio?._id) {
+
+  if (!studio) {
     return (
       <main
         className="flex flex-1 items-center justify-center px-4 py-20"
@@ -138,10 +128,12 @@ export default async function DetailsPage({
       >
         <div className="flex flex-col items-center gap-4 rounded-2xl bg-white p-12 text-center shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
           <h1 className="text-xl font-semibold">Studio not found</h1>
+
           <p className="max-w-sm text-sm text-muted-foreground">
             We couldn’t find the studio you’re looking for. It may have been
             removed.
           </p>
+
           <Link
             href="/studios/All-studios"
             className="rounded-lg bg-[#6D4AFF] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#5A3BD9]"
@@ -165,13 +157,17 @@ export default async function DetailsPage({
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
+
             <BreadcrumbSeparator />
+
             <BreadcrumbItem>
               <BreadcrumbLink href="/studios/All-studios">
                 Explore Studios
               </BreadcrumbLink>
             </BreadcrumbItem>
+
             <BreadcrumbSeparator />
+
             <BreadcrumbItem>
               <BreadcrumbPage>{studio.title}</BreadcrumbPage>
             </BreadcrumbItem>
@@ -179,70 +175,100 @@ export default async function DetailsPage({
         </Breadcrumb>
 
         <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Left column */}
+          {/* Left side */}
           <div className="space-y-8 lg:col-span-2">
-            {/* Gallery carousel */}
+            {/* Studio image */}
             <StudioGallery images={[studio.imageUrl]} title={studio.title} />
 
-            {/* Title row */}
+            {/* Studio title and rating */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="space-y-2">
                 <Badge className="bg-[#6D4AFF]/10 text-[#6D4AFF] hover:bg-[#6D4AFF]/10">
                   {studio.category}
                 </Badge>
+
                 <h1 className="text-3xl font-semibold tracking-tight">
                   {studio.title}
                 </h1>
+
                 <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   <MapPin className="size-4" />
                   {studio.location}
                 </p>
               </div>
 
-              {/* Rating (demo) */}
               <div className="flex items-center gap-2 rounded-full bg-[#F4A340]/15 px-3 py-1.5">
                 <Star className="size-4 fill-[#F4A340] text-[#F4A340]" />
+
                 <span className="text-sm font-semibold">
                   {demoRating.average}
                 </span>
+
                 <span className="text-xs text-muted-foreground">
                   ({demoRating.count} reviews)
                 </span>
               </div>
             </div>
 
-            {/* Workspace Specifications */}
+            {/* Workspace specifications */}
             <section className="space-y-4">
               <h2 className="text-lg font-semibold">
                 Workspace Specifications
               </h2>
+
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <SpecItem
-                  icon={BadgeDollarSign}
-                  label="Hourly Rate"
-                  value={`$${studio.rate} / hr`}
-                />
-                <SpecItem
-                  icon={Wallet}
-                  label="Security Deposit"
-                  value={`$${studio.deposit}`}
-                />
-                <SpecItem
-                  icon={Users}
-                  label="Max Capacity"
-                  value={`${studio.capacity} people`}
-                />
-                <SpecItem
-                  icon={LayoutGrid}
-                  label="Category"
-                  value={studio.category}
-                />
+                <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+                  <span className="flex size-10 items-center justify-center rounded-lg bg-[#6D4AFF]/10">
+                    <BadgeDollarSign className="size-5 text-[#6D4AFF]" />
+                  </span>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Hourly Rate</p>
+                    <p className="text-sm font-semibold">${studio.rate} / hr</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+                  <span className="flex size-10 items-center justify-center rounded-lg bg-[#6D4AFF]/10">
+                    <Wallet className="size-5 text-[#6D4AFF]" />
+                  </span>
+                  <div>
+                    <p className="text-xs text-muted-foreground">
+                      Security Deposit
+                    </p>
+                    <p className="text-sm font-semibold">${studio.deposit}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+                  <span className="flex size-10 items-center justify-center rounded-lg bg-[#6D4AFF]/10">
+                    <Users className="size-5 text-[#6D4AFF]" />
+                  </span>
+                  <div>
+                    <p className="text-xs text-muted-foreground">
+                      Max Capacity
+                    </p>
+                    <p className="text-sm font-semibold">
+                      {studio.capacity} people
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+                  <span className="flex size-10 items-center justify-center rounded-lg bg-[#6D4AFF]/10">
+                    <LayoutGrid className="size-5 text-[#6D4AFF]" />
+                  </span>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Category</p>
+                    <p className="text-sm font-semibold">{studio.category}</p>
+                  </div>
+                </div>
               </div>
             </section>
 
-            {/* Detailed Overview */}
+            {/* Studio overview */}
             <section className="space-y-3">
               <h2 className="text-lg font-semibold">Detailed Overview</h2>
+
               <div className="rounded-2xl bg-white p-6 leading-relaxed text-muted-foreground ring-1 ring-border">
                 {studio.overview}
               </div>
@@ -251,31 +277,32 @@ export default async function DetailsPage({
             {/* Amenities */}
             <section className="space-y-4">
               <h2 className="text-lg font-semibold">Amenities</h2>
+
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {studio.amenities.map((item) => {
-                  const Icon = amenityIcons[item] ?? Tag;
-                  return (
-                    <div
-                      key={item}
-                      className="flex items-center gap-3 rounded-xl bg-white p-4 ring-1 ring-border"
-                    >
-                      <Icon className="size-4 shrink-0 text-[#6D4AFF]" />
-                      <span className="text-sm font-medium">{item}</span>
-                    </div>
-                  );
-                })}
+                {studio.amenities.map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-3 rounded-xl bg-white p-4 ring-1 ring-border"
+                  >
+                    <AmenityIcon name={item} />
+                    <span className="text-sm font-medium">{item}</span>
+                  </div>
+                ))}
               </div>
             </section>
 
-            {/* Host Details */}
+            {/* Host details */}
             <section className="space-y-4">
               <h2 className="text-lg font-semibold">Host Details</h2>
+
               <div className="flex items-center gap-4 rounded-2xl bg-white p-6 ring-1 ring-border">
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#6D4AFF]">
+                <span className="flex size-12 items-center justify-center rounded-full bg-[#6D4AFF]">
                   <User className="size-6 text-white" />
                 </span>
+
                 <div className="min-w-0">
                   <p className="font-semibold">{studio.username}</p>
+
                   <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
                     <Mail className="size-4" />
                     {studio.useremail}
@@ -284,9 +311,10 @@ export default async function DetailsPage({
               </div>
             </section>
 
-            {/* Reviews (demo) */}
+            {/* Demo reviews */}
             <section className="space-y-4">
               <h2 className="text-lg font-semibold">Reviews</h2>
+
               <div className="space-y-4">
                 {demoReviews.map((review) => (
                   <div
@@ -295,18 +323,24 @@ export default async function DetailsPage({
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#6D4AFF]/10 text-sm font-semibold text-[#6D4AFF]">
+                        <span className="flex size-10 items-center justify-center rounded-full bg-[#6D4AFF]/10 text-sm font-semibold text-[#6D4AFF]">
                           {review.name.charAt(0)}
                         </span>
+
                         <div>
-                          <p className="text-sm font-semibold">{review.name}</p>
+                          <p className="text-sm font-semibold">
+                            {review.name}
+                          </p>
+
                           <p className="text-xs text-muted-foreground">
                             {review.date}
                           </p>
                         </div>
                       </div>
+
                       <Stars rating={review.rating} />
                     </div>
+
                     <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                       {review.comment}
                     </p>
@@ -316,18 +350,20 @@ export default async function DetailsPage({
             </section>
           </div>
 
-          {/* Right column — booking card */}
+          {/* Right side: booking card */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 rounded-2xl bg-white p-6 shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-semibold text-[#6D4AFF]">
                   ${studio.rate}
                 </span>
+
                 <span className="text-sm text-muted-foreground">/ hour</span>
               </div>
 
               <div className="mt-3 flex items-center gap-2">
                 <Stars rating={demoRating.average} />
+
                 <span className="text-xs text-muted-foreground">
                   {demoRating.average} · {demoRating.count} reviews
                 </span>
@@ -342,15 +378,22 @@ export default async function DetailsPage({
                   </span>
                   <span className="font-medium">${studio.deposit}</span>
                 </div>
+
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Max capacity</span>
-                  <span className="font-medium">{studio.capacity} people</span>
+                  <span className="font-medium">
+                    {studio.capacity} people
+                  </span>
                 </div>
               </div>
 
               <BookingModal
                 studioTitle={studio.title}
+                studioImage={studio.imageUrl}
                 hourlyRate={studio.rate}
+                id={studio._id}
+                userName={studio.username}
+                userEmail={studio.useremail}
               />
             </div>
           </div>

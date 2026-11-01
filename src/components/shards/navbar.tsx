@@ -36,8 +36,8 @@ import { authClient } from "@/lib/auth-client"
 const links = [
   { label: "Home", href: "/" },
   { label: "Explore Studios", href: "/studios/All-studios" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "About Us", href: "#about-us" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "About Us", href: "/#about-us" },
 ]
 
 function NavLink({ href, label }: { href: string; label: string }) {

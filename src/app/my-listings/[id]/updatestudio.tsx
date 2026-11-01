@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/select";
 import { authClient } from "@/lib/auth-client";
 import { TStudio } from "@/lib/studios";
+import Image from "next/image";
 
 const categories = [
   "Photo Studio",
@@ -73,11 +74,11 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
-  const [category, setCategory] = useState<string>("");
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
-  const [imagePreview, setImagePreview] = useState<string>("");
-  const [imageUrl, setImageUrl] = useState<string>("");
-
+  const [category, setCategory] = useState<string>(data.category || "");
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>( data.amenities ??[]);
+  const [imagePreview, setImagePreview] = useState<string>( data.imageUrl || "");
+  const [imageUrl, setImageUrl] = useState<string>(data.imageUrl || "");
+  
   const toggleAmenity = (label: string) => {
     setSelectedAmenities((prev) =>
       prev.includes(label)
@@ -119,11 +120,11 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
 
     const { image, imageUrl: formImageUrl, ...studioData } = Data;
 
-    const response = await fetch("http://localhost:5000/add-studios", {
+    const response = await fetch(`http://localhost:5000/studios-update/${data._id}`, {
       headers: {
         "Content-Type": "application/json",
       },
-      method: "POST",
+      method: "PATCH",
       body: JSON.stringify({
         ...studioData,
         category,
@@ -134,8 +135,8 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
       }),
     });
 
-    const data = await response.json();
-    console.log(data);
+    const datas = await response.json();
+    console.log(datas);
   };
 
   return (
@@ -151,7 +152,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
           </span>
           <div>
             <h1 className="text-3xl font-semibold tracking-tight">
-              Add New Studio
+              Update Studio
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
               List your creative space on StudioSpace. Fill in the details
@@ -211,6 +212,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                       min={0}
                       placeholder="45"
                       className="h-10 pl-9"
+                      defaultValue={data.rate}
                     />
                   </div>
                 </div>
@@ -226,6 +228,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                       min={0}
                       placeholder="200"
                       className="h-10 pl-9"
+                        defaultValue={data.deposit}
                     />
                   </div>
                 </div>
@@ -241,6 +244,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                       min={1}
                       placeholder="12"
                       className="h-10 pl-9"
+                        defaultValue={data.capacity}
                     />
                   </div>
                 </div>
@@ -255,6 +259,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                       type="text"
                       placeholder="123 creative Ave, Brooklyn, NY"
                       className="h-10 pl-9"
+                        defaultValue={data.location}
                     />
                   </div>
                 </div>
@@ -268,10 +273,12 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
               {imagePreview ? (
                 <div className="relative overflow-hidden rounded-xl ring-1 ring-border">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={imagePreview}
                     alt="Studio preview"
                     className="h-56 w-full object-cover"
+                    width={500}
+                    height={300}
                   />
                   <button
                     type="button"
@@ -316,10 +323,12 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                   type="url"
                   placeholder="https://example.com/studio.jpg"
                   className="h-10"
+                  defaultValue={data.imageUrl}
                   onChange={(event) => {
                     const url = event.target.value.trim();
                     setImageUrl(url);
                     setImagePreview(url);
+                   
                   }}
                 />
               </div>
@@ -361,6 +370,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                 name="overview"
                 placeholder="Describe your studio, its layout, lighting, gear, and what makes it ideal for creators..."
                 className="min-h-32"
+                defaultValue={data.overview}
               />
             </section>
 
@@ -411,7 +421,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                 type="submit"
                 className="h-10 bg-[#6D4AFF] px-6 text-white shadow-[0_4px_14px_rgba(109,74,255,0.35)] transition-colors hover:bg-[#5A3BD9]"
               >
-                Add Studio
+                update Studio
               </Button>
             </div>
           </form>

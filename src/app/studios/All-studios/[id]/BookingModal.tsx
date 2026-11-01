@@ -1,10 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarCheck } from "lucide-react";
+import Image from "next/image";
+import { CalendarCheck, CalendarDays, Clock } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -14,21 +30,91 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+/* Duration choices shown in the dropdown (in hours). */
+const durationOptions = ["1", "2", "3", "4", "5", "6", "7", "8"];
+
 /**
  * Reusable booking button + modal.
- * UI only — no booking API. Move it to any page and pass studio info.
+ * Frontend only — the Confirm button does not submit anything yet.
  */
 export function BookingModal({
   studioTitle,
+  studioImage,
   hourlyRate,
   className,
+  id,
+  userName,
+  userEmail
 }: {
-  studioTitle?: string;
-  hourlyRate?: string;
+  studioTitle: string;
+  studioImage: string;
+  hourlyRate: string;
   className?: string;
+  id: string;
+  userName: string;
+  userEmail: string;
 }) {
-  const [open, setOpen] = useState(false);
 
+
+  const [open, setOpen] = useState(false);
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+
+  // The values the user picks in the form.
+  const [bookingDate, setBookingDate] = useState<Date | undefined>(undefined);
+  const [startTime, setStartTime] = useState("09:00");
+  const [duration, setDuration] = useState("3");
+
+  // --- Calculations (they simply re-run on every render) ---
+  const durationHours = Number(duration);
+  const ratePerHour = Number(hourlyRate);
+  const totalAmount = ratePerHour * durationHours;
+
+  // Turn "09:00" into a real date so we can add hours and format it nicely.
+  const startDate = new Date(`2000-01-01T${startTime}`);
+  const endDate = new Date(startDate);
+  endDate.setMinutes(endDate.getMinutes() + durationHours * 60);
+
+  const startTimeLabel = startTime
+    ? startDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
+    : "—";
+  const endTimeLabel = startTime
+    ? endDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
+    : "—";
+
+  const durationLabel =
+    durationHours === 1 ? "1 hour" : `${durationHours} hours`;
+
+  const dateLabel = bookingDate
+    ? bookingDate.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "Select a booking date";
+     const handlesubmit = async() => {
+      const res =await fetch("http://localhost:5000/bookings",{
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          studioId: id,
+          title: studioTitle,
+          imageUrl: studioImage,
+          hourlyRate: hourlyRate,
+          bookingDate: dateLabel.toString(),
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          duration: durationHours,
+          totalAmount: totalAmount,
+          userName: userName,
+          userEmail: userEmail,
+          status: "pending"
+        })
+      })
+      const data = await res.json()
+      console.log(data)
+     }
   return (
     <>
       <Button
@@ -43,37 +129,139 @@ export function BookingModal({
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="max-h-[92vh] overflow-y-auto sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Book Workspace</DialogTitle>
             <DialogDescription>
-              {studioTitle}
-              {hourlyRate ? ` · $${hourlyRate} / hour` : ""}
+              Choose your date and time to reserve this studio.
             </DialogDescription>
           </DialogHeader>
 
+          {/* Studio summary */}
+          <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-3 ring-1 ring-border">
+            <Image
+              src={studioImage}
+              alt={studioTitle}
+              width={64}
+              height={52}
+              className="h-13 w-16 shrink-0 rounded-lg object-cover"
+            />
+            <div className="min-w-0">
+              <p className="truncate font-semibold">{studioTitle}</p>
+              <p className="text-sm font-semibold text-[#6D4AFF]">
+                ${hourlyRate}
+                <span className="ml-1 font-normal text-muted-foreground">
+                  / hour
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {/* Date, start time and duration */}
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="booking-date">Booking Date</Label>
-              <Input id="booking-date" type="date" className="h-10" />
+              <Label>Booking Date</Label>
+              <Popover open={datePickerOpen} onOpenChange={setDatePickerOpen}>
+                <PopoverTrigger
+                  render={
+                    <Button
+                      variant="outline"
+                      className="h-10 w-full justify-start gap-2 font-normal"
+                    />
+                  }
+                >
+                  <CalendarDays className="size-4 text-muted-foreground" />
+                  {dateLabel}
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={bookingDate}
+                    onSelect={(date) => {
+                      setBookingDate(date);
+                      setDatePickerOpen(false);
+                    }}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="booking-start">Start Time</Label>
-                <Input id="booking-start" type="time" className="h-10" />
+                <Input
+                  id="booking-start"
+                  type="time"
+                  value={startTime}
+                  onChange={(event) => setStartTime(event.target.value)}
+                  className="h-10"
+                />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="booking-duration">Duration (hours)</Label>
-                <Input
-                  id="booking-duration"
-                  type="number"
-                  min={1}
-                  placeholder="3"
-                  className="h-10"
-                />
+                <Select
+                  value={duration}
+                  onValueChange={(value) => setDuration(value ?? "3")}
+                >
+                  <SelectTrigger id="booking-duration" className="h-10 w-full">
+                    <SelectValue placeholder="Select duration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {durationOptions.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {option} {option === "1" ? "hour" : "hours"}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
+            </div>
+          </div>
+
+          {/* Automatically calculated values */}
+          <div className="space-y-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+            <div className="flex items-center gap-2">
+              <Clock className="size-4 text-[#6D4AFF]" />
+              <p className="text-sm font-semibold">Automatically Calculated</p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div>
+                <p className="text-xs text-muted-foreground">Start Time</p>
+                <p className="text-sm font-semibold">{startTimeLabel}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Duration</p>
+                <p className="text-sm font-semibold">{durationLabel}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">End Time</p>
+                <p className="text-sm font-semibold text-[#6D4AFF]">
+                  {endTimeLabel}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Booking summary */}
+          <div className="rounded-xl bg-[#6D4AFF]/5 p-4 ring-1 ring-[#6D4AFF]/20">
+            <p className="text-sm font-semibold">Booking Summary</p>
+
+            <div className="mt-3 flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">
+                ${ratePerHour} × {durationLabel}
+              </span>
+              <span className="font-medium">${totalAmount}</span>
+            </div>
+
+            <Separator className="my-3" />
+
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold">Total Amount</span>
+              <span className="text-xl font-semibold text-[#6D4AFF]">
+                ${totalAmount}
+              </span>
             </div>
           </div>
 
@@ -82,8 +270,10 @@ export function BookingModal({
               Cancel
             </Button>
             <Button
-              onClick={() => setOpen(false)}
+             
+              onClick={handlesubmit}
               className="bg-[#6D4AFF] text-white hover:bg-[#5A3BD9]"
+              
             >
               Confirm Booking
             </Button>
