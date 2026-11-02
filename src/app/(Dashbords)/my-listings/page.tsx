@@ -16,6 +16,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import StudioDlete from "./ StudioDlete";
 import Link from "next/link";
+import CTFButton from "./CTFButton";
 
   
 // Listings will be loaded here later — empty for now (no fake data).
@@ -79,14 +80,8 @@ export default async function MyListingsPage() {
 
             <TableBody>
               {listings.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="py-12 text-center">
-                    <p className="font-medium">No listings yet</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Studios you add will appear here.
-                    </p>
-                  </TableCell>
-                </TableRow>
+                <CTFButton></CTFButton>
+              
               ) : (
                 listings.map((studio) => (
                   <TableRow key={studio._id}>

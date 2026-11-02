@@ -98,7 +98,15 @@ export default function StudiosFilter({
   const handleSortChange = (value: string | null) => {
     if (value === null) return;
     setSort(value);
+
   };
+  const clearFilters = () => {
+  setSearch("");
+  setCategory("All");
+  setSort("");
+
+  router.push("/studios/All-studios");
+};
 
   return (
     <section
@@ -180,23 +188,34 @@ export default function StudiosFilter({
         {/* ---------- Studio cards grid ---------- */}
         <div className="mt-6">
           {sortedStudios.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-[#6D4AFF]/10">
-                <Search className="size-8 text-brand-text" />
-              </div>
-              <h3 className="text-lg font-semibold">No studios found</h3>
-              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-                Try adjusting your search or category filter to find what you
-                are looking for.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {sortedStudios.map((studio) => (
-                <StudioCard key={studio?._id} studio={studio} />
-              ))}
-            </div>
-          )}
+  <div className="flex flex-col items-center justify-center py-20 text-center">
+    <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-[#6D4AFF]/10">
+      <Search className="size-8 text-brand-text" />
+    </div>
+
+    <h3 className="text-lg font-semibold">
+      No Studios Found
+    </h3>
+
+    <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+      We couldn't find any studios matching your search.
+      Try changing your search or filters.
+    </p>
+
+    <Button
+      onClick={clearFilters}
+      className="mt-5 rounded-lg bg-[#6D4AFF] text-white hover:bg-[#5A3BD9]"
+    >
+      Clear Filters
+    </Button>
+  </div>
+) : (
+  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {sortedStudios.map((studio) => (
+      <StudioCard key={studio?._id} studio={studio} />
+    ))}
+  </div>
+)}
         </div>
       </div>
     </section>

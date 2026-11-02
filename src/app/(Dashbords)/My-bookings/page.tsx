@@ -1,8 +1,11 @@
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { CalendarCheck, CalendarDays } from "lucide-react";
 
 import BookingCard from "./BookingCard";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type Booking = {
   _id: string;
@@ -167,14 +170,52 @@ const MyBookings = async () => {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <h1 className="mb-6 text-2xl font-semibold">My Bookings</h1>
+      {/* Page header — matches My Studio Listings design */}
+      <div className="grid w-full grid-cols-[1fr_auto] items-center gap-x-6">
+        <div className="flex flex-col items-start gap-4">
+          <span className="flex size-12 items-center justify-center rounded-xl bg-[#6D4AFF] shadow-[0_6px_18px_rgba(109,74,255,0.35)]">
+            <CalendarCheck className="size-6 text-white" />
+          </span>
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tight">
+              My Bookings
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+              Manage your reservations and keep your bookings up to date.
+            </p>
+          </div>
+        </div>
+
+        {/* Summary */}
+        <div className="inline-flex items-center gap-4 rounded-2xl bg-card p-5 shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
+          <span className="flex size-11 items-center justify-center rounded-xl bg-[#6D4AFF]/10">
+            <CalendarDays className="size-5 text-brand-text" />
+          </span>
+          <div>
+            <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              Total Bookings
+            </p>
+            <p className="text-2xl font-semibold">{data.length}</p>
+          </div>
+        </div>
+      </div>
 
       {data.length === 0 ? (
         <div className="py-20 text-center">
-          <p className="text-lg text-muted-foreground">No bookings found.</p>
-        </div>
+  <p className="text-xl font-semibold">No Bookings Yet!</p>
+
+  <p className="mt-2 text-sm text-muted-foreground">
+    You haven't booked a studio yet. Find the perfect creative space for your next project.
+  </p>
+
+  <Button   className="mt-6">
+    <Link href="/studios">
+      Explore Studios
+    </Link>
+  </Button>
+</div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {data.map((booking) => (
             <BookingCard key={booking._id} booking={booking} />
           ))}

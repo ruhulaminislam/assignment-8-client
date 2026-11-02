@@ -33,6 +33,7 @@ import {
 import type { TStudio } from "@/lib/studios";
 import { StudioGallery } from "./StudioGallery";
 import { BookingModal } from "./BookingModal";
+import { notFound } from "next/navigation";
 
 
 const demoRating = {
@@ -121,27 +122,7 @@ export default async function DetailsPage({
 
 
   if (!studio) {
-    return (
-      <main
-        className="flex flex-1 items-center justify-center bg-canvas px-4 py-20"
-      >
-        <div className="flex flex-col items-center gap-4 rounded-2xl bg-card p-12 text-center shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
-          <h1 className="text-xl font-semibold">Studio not found</h1>
-
-          <p className="max-w-sm text-sm text-muted-foreground">
-            We couldn’t find the studio you’re looking for. It may have been
-            removed.
-          </p>
-
-          <Link
-            href="/studios/All-studios"
-            className="rounded-lg bg-[#6D4AFF] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#5A3BD9]"
-          >
-            Back to Explore Studios
-          </Link>
-        </div>
-      </main>
-    );
+    notFound()
   }
 
   return (
