@@ -144,6 +144,11 @@ export default function AddStudioPage() {
             description: "your new studio has been added successfully.",
           })
           redirect("/my-listings");
+        }else{
+          toast.add({
+            type: "error",
+            description: "Failed to add the studio. Please try again.",
+          })
         }
      
        

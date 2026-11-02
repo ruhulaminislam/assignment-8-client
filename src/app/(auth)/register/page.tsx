@@ -55,6 +55,10 @@ export default function RegisterForm() {
     ...userData
 });
          if(data){
+          toast.add({
+            type: "success",
+            description: "Registration successful. Please log in.",
+          })
             redirect("/login")
         }
         if(error){

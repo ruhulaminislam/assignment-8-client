@@ -147,6 +147,11 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
             description: "your  studio card  has been updated successfully.",
           })
           redirect("/my-listings");
+        }else{
+          toast.add({
+            type: "error",
+            description: "Failed to update the studio. Please try again.",
+          })
         }
   };
 

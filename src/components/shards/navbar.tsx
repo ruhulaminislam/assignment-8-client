@@ -26,6 +26,7 @@ import {
 import { authClient } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "./mode"
+import { toast } from "../ui/toast"
 
 // ---------- Data (শুধু এখানে বদলালেই হবে) ----------
 const navLinks = [
@@ -85,11 +86,33 @@ function UserAvatar({ user, size }: { user: any; size?: "sm" }) {
 function UserMenu({ user }: { user: any }) {
   const router = useRouter()
 
-  const handleLogout = async () => {
+const handleLogout = async () => {
+  try {
     await authClient.signOut({
-      fetchOptions: { onSuccess: () => router.push("/login") },
-    })
+      fetchOptions: {
+        onSuccess: () => {
+          toast.add({
+            title: "Logout successful!",
+            description: "You have been logged out.",
+          });
+
+          router.push("/login");
+        },
+        onError: () => {
+          toast.add({
+            title: "Logout failed!",
+            description: "Something went wrong.",
+          });
+        },
+      },
+    });
+  } catch (error) {
+    toast.add({
+      title: "Logout failed!",
+      description: "Please try again.",
+    });
   }
+};
 
   return (
     <DropdownMenu>

@@ -27,7 +27,13 @@ const  StudioDlete = ({id}:{id:string}) => {
           })
           router.refresh()
       
-  }}
+  }else{
+      toast.add({
+            type: "error",
+            description: "Failed to delete the studio.",
+          })
+    }
+  }
   return (
     <div>
       

@@ -29,12 +29,17 @@ export default function LoginForm() {
     const userData = Object.fromEntries(formData.entries())as{email: string, password: string};
 
     console.log(userData);
-const result = await authClient.signIn.email({
+const {data,error} = await authClient.signIn.email({
   ...userData,
   rememberMe: true,
 });
-  
-  if (result.error) {
+  if (data) {
+    toast.add({
+            type: "success",
+            description: "Login successful.",
+          })
+  }
+  if (error) {
     toast.add({
             type: "warning",
             description: "login failed. Please try again.",

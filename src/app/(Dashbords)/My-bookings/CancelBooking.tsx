@@ -35,9 +35,13 @@ const CancelBooking = ({isPending,status,booking }:{isPending: boolean; status: 
             description: "Booking has been cancelled.",
           })
           router.refresh()
-    }
-    
-    }
+    }else{
+        toast.add({
+            type: "error",
+            description: "Failed to cancel the booking.",
+          })
+        }
+      }
   return (
     <div>
         <div className="mt-4 border-t pt-4">
