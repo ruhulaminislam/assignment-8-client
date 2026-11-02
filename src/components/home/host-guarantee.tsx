@@ -70,7 +70,7 @@ export function HostGuarantee() {
               aria-hidden="true"
             />
 
-            <span className="flex size-12 items-center justify-center rounded-full bg-[#6D4AFF]/10 text-[#6D4AFF] ring-1 ring-[#6D4AFF]/25 transition-colors duration-300">
+            <span className="flex size-12 items-center justify-center rounded-full bg-[#6D4AFF]/10 text-brand-text ring-1 ring-[#6D4AFF]/25 transition-colors duration-300">
               <feature.icon className="size-6" aria-hidden="true" />
             </span>
 

@@ -101,7 +101,7 @@ const result = await authClient.signIn.email({
 
               <Link
                 href="/forgot-password"
-                className="text-xs font-medium text-[#6D4AFF] hover:text-[#5A3BD9]"
+                className="text-xs font-medium text-brand-text hover:text-brand-text-hover"
               >
                 Forgot Password?
               </Link>
@@ -173,7 +173,7 @@ const result = await authClient.signIn.email({
           Don't have an account?{" "}
           <Link
             href="/register"
-            className="font-medium text-[#6D4AFF] hover:text-[#5A3BD9]"
+            className="font-medium text-brand-text hover:text-brand-text-hover"
           >
             Register
           </Link>

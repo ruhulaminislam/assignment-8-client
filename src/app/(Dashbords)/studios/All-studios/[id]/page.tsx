@@ -66,18 +66,18 @@ const demoReviews = [
 
 
 function AmenityIcon({ name }: { name: string }) {
-  if (name === "Wi-Fi") return <Wifi className="size-4 text-[#6D4AFF]" />;
+  if (name === "Wi-Fi") return <Wifi className="size-4 text-brand-text" />;
   if (name === "Air Conditioning")
-    return <Snowflake className="size-4 text-[#6D4AFF]" />;
-  if (name === "Parking") return <Car className="size-4 text-[#6D4AFF]" />;
+    return <Snowflake className="size-4 text-brand-text" />;
+  if (name === "Parking") return <Car className="size-4 text-brand-text" />;
   if (name === "Lighting Equipment")
-    return <Lightbulb className="size-4 text-[#6D4AFF]" />;
+    return <Lightbulb className="size-4 text-brand-text" />;
   if (name === "Soundproof Room")
-    return <VolumeX className="size-4 text-[#6D4AFF]" />;
+    return <VolumeX className="size-4 text-brand-text" />;
   if (name === "Projector")
-    return <Projector className="size-4 text-[#6D4AFF]" />;
+    return <Projector className="size-4 text-brand-text" />;
 
-  return <Tag className="size-4 text-[#6D4AFF]" />;
+  return <Tag className="size-4 text-brand-text" />;
 }
 
 
@@ -123,10 +123,9 @@ export default async function DetailsPage({
   if (!studio) {
     return (
       <main
-        className="flex flex-1 items-center justify-center px-4 py-20"
-        style={{ backgroundColor: "#F8F7FC" }}
+        className="flex flex-1 items-center justify-center bg-canvas px-4 py-20"
       >
-        <div className="flex flex-col items-center gap-4 rounded-2xl bg-white p-12 text-center shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
+        <div className="flex flex-col items-center gap-4 rounded-2xl bg-card p-12 text-center shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
           <h1 className="text-xl font-semibold">Studio not found</h1>
 
           <p className="max-w-sm text-sm text-muted-foreground">
@@ -147,8 +146,7 @@ export default async function DetailsPage({
 
   return (
     <main
-      className="flex-1 px-4 py-10 sm:px-6 lg:px-8"
-      style={{ backgroundColor: "#F8F7FC" }}
+      className="flex-1 bg-canvas px-4 py-10 sm:px-6 lg:px-8"
     >
       <div className="mx-auto w-full max-w-6xl">
         {/* Breadcrumb */}
@@ -183,7 +181,7 @@ export default async function DetailsPage({
             {/* Studio title and rating */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="space-y-2">
-                <Badge className="bg-[#6D4AFF]/10 text-[#6D4AFF] hover:bg-[#6D4AFF]/10">
+                <Badge className="bg-[#6D4AFF]/10 text-brand-text hover:bg-[#6D4AFF]/10">
                   {studio.category}
                 </Badge>
 
@@ -217,9 +215,9 @@ export default async function DetailsPage({
               </h2>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+                <div className="flex items-center gap-3 rounded-xl bg-surface p-4 ring-1 ring-border">
                   <span className="flex size-10 items-center justify-center rounded-lg bg-[#6D4AFF]/10">
-                    <BadgeDollarSign className="size-5 text-[#6D4AFF]" />
+                    <BadgeDollarSign className="size-5 text-brand-text" />
                   </span>
                   <div>
                     <p className="text-xs text-muted-foreground">Hourly Rate</p>
@@ -227,9 +225,9 @@ export default async function DetailsPage({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+                <div className="flex items-center gap-3 rounded-xl bg-surface p-4 ring-1 ring-border">
                   <span className="flex size-10 items-center justify-center rounded-lg bg-[#6D4AFF]/10">
-                    <Wallet className="size-5 text-[#6D4AFF]" />
+                    <Wallet className="size-5 text-brand-text" />
                   </span>
                   <div>
                     <p className="text-xs text-muted-foreground">
@@ -239,9 +237,9 @@ export default async function DetailsPage({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+                <div className="flex items-center gap-3 rounded-xl bg-surface p-4 ring-1 ring-border">
                   <span className="flex size-10 items-center justify-center rounded-lg bg-[#6D4AFF]/10">
-                    <Users className="size-5 text-[#6D4AFF]" />
+                    <Users className="size-5 text-brand-text" />
                   </span>
                   <div>
                     <p className="text-xs text-muted-foreground">
@@ -253,9 +251,9 @@ export default async function DetailsPage({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+                <div className="flex items-center gap-3 rounded-xl bg-surface p-4 ring-1 ring-border">
                   <span className="flex size-10 items-center justify-center rounded-lg bg-[#6D4AFF]/10">
-                    <LayoutGrid className="size-5 text-[#6D4AFF]" />
+                    <LayoutGrid className="size-5 text-brand-text" />
                   </span>
                   <div>
                     <p className="text-xs text-muted-foreground">Category</p>
@@ -269,7 +267,7 @@ export default async function DetailsPage({
             <section className="space-y-3">
               <h2 className="text-lg font-semibold">Detailed Overview</h2>
 
-              <div className="rounded-2xl bg-white p-6 leading-relaxed text-muted-foreground ring-1 ring-border">
+              <div className="rounded-2xl bg-card p-6 leading-relaxed text-muted-foreground ring-1 ring-border">
                 {studio.overview}
               </div>
             </section>
@@ -282,7 +280,7 @@ export default async function DetailsPage({
                 {studio.amenities.map((item) => (
                   <div
                     key={item}
-                    className="flex items-center gap-3 rounded-xl bg-white p-4 ring-1 ring-border"
+                    className="flex items-center gap-3 rounded-xl bg-card p-4 ring-1 ring-border"
                   >
                     <AmenityIcon name={item} />
                     <span className="text-sm font-medium">{item}</span>
@@ -295,7 +293,7 @@ export default async function DetailsPage({
             <section className="space-y-4">
               <h2 className="text-lg font-semibold">Host Details</h2>
 
-              <div className="flex items-center gap-4 rounded-2xl bg-white p-6 ring-1 ring-border">
+              <div className="flex items-center gap-4 rounded-2xl bg-card p-6 ring-1 ring-border">
                 <span className="flex size-12 items-center justify-center rounded-full bg-[#6D4AFF]">
                   <User className="size-6 text-white" />
                 </span>
@@ -319,11 +317,11 @@ export default async function DetailsPage({
                 {demoReviews.map((review) => (
                   <div
                     key={review.name}
-                    className="rounded-2xl bg-white p-6 ring-1 ring-border"
+                    className="rounded-2xl bg-card p-6 ring-1 ring-border"
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <span className="flex size-10 items-center justify-center rounded-full bg-[#6D4AFF]/10 text-sm font-semibold text-[#6D4AFF]">
+                        <span className="flex size-10 items-center justify-center rounded-full bg-[#6D4AFF]/10 text-sm font-semibold text-brand-text">
                           {review.name.charAt(0)}
                         </span>
 
@@ -352,9 +350,9 @@ export default async function DetailsPage({
 
           {/* Right side: booking card */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 rounded-2xl bg-white p-6 shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
+            <div className="sticky top-24 rounded-2xl bg-card p-6 shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-semibold text-[#6D4AFF]">
+                <span className="text-3xl font-semibold text-brand-text">
                   ${studio.rate}
                 </span>
 

@@ -21,7 +21,7 @@ type Booking = {
 export default function BookingCard({ booking }: { booking: Booking }) {
  const status = booking.status;
 
-  const isPending = status === "Pending";
+  const isPending = status ==="pending";
 
   const startTime = new Date(booking.startDate).toLocaleTimeString("en-US", {
     hour: "2-digit",
@@ -34,7 +34,7 @@ export default function BookingCard({ booking }: { booking: Booking }) {
   });
 
   return (
-    <div className="rounded-2xl border bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
       {/* Studio Information */}
       <div className="mb-4 flex items-center gap-3">
         <Image
@@ -47,16 +47,16 @@ export default function BookingCard({ booking }: { booking: Booking }) {
 
         <div>
           <h3 className="font-semibold">{booking.title}</h3>
-          <p className="text-sm text-[#6D4AFF]">
+          <p className="text-sm text-brand-text">
             ${booking.hourlyRate} / hour
           </p>
         </div>
       </div>
 
       {/* Booking Information */}
-      <div className="space-y-2 text-sm text-gray-500">
+      <div className="space-y-2 text-sm text-muted-foreground">
         <p>
-          <span className="font-medium text-[#6D4AFF]">
+          <span className="font-medium text-brand-text">
             {booking.bookingDate}
           </span>
           {" • "}
@@ -66,7 +66,7 @@ export default function BookingCard({ booking }: { booking: Booking }) {
         <p>
           {booking.duration} hours
           {" • "}
-          <span className="font-semibold text-[#6D4AFF]">
+          <span className="font-semibold text-brand-text">
             Total: ${booking.totalAmount}
           </span>
         </p>

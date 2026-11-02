@@ -29,6 +29,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { toast } from "@/components/ui/toast";
 
 /* Duration choices shown in the dropdown (in hours). */
 const durationOptions = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -112,9 +113,21 @@ export function BookingModal({
           status: "pending"
         })
       })
-      const data = await res.json()
-      console.log(data)
-     }
+      const data = await res.json();
+
+if (res.ok && data.insertedId) {
+  toast.add({
+    type: "success",
+    description: "Booking has been confirmed.",
+  });
+} else {
+  toast.add({
+    type: "warning",
+    description: data.message,
+  });
+}
+       }
+     
   return (
     <>
       <Button
@@ -138,7 +151,7 @@ export function BookingModal({
           </DialogHeader>
 
           {/* Studio summary */}
-          <div className="flex items-center gap-3 rounded-xl bg-[#F8F7FC] p-3 ring-1 ring-border">
+          <div className="flex items-center gap-3 rounded-xl bg-surface p-3 ring-1 ring-border">
             <Image
               src={studioImage}
               alt={studioTitle}
@@ -148,7 +161,7 @@ export function BookingModal({
             />
             <div className="min-w-0">
               <p className="truncate font-semibold">{studioTitle}</p>
-              <p className="text-sm font-semibold text-[#6D4AFF]">
+              <p className="text-sm font-semibold text-brand-text">
                 ${hourlyRate}
                 <span className="ml-1 font-normal text-muted-foreground">
                   / hour
@@ -220,9 +233,9 @@ export function BookingModal({
           </div>
 
           {/* Automatically calculated values */}
-          <div className="space-y-3 rounded-xl bg-[#F8F7FC] p-4 ring-1 ring-border">
+          <div className="space-y-3 rounded-xl bg-surface p-4 ring-1 ring-border">
             <div className="flex items-center gap-2">
-              <Clock className="size-4 text-[#6D4AFF]" />
+              <Clock className="size-4 text-brand-text" />
               <p className="text-sm font-semibold">Automatically Calculated</p>
             </div>
 
@@ -237,7 +250,7 @@ export function BookingModal({
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">End Time</p>
-                <p className="text-sm font-semibold text-[#6D4AFF]">
+                <p className="text-sm font-semibold text-brand-text">
                   {endTimeLabel}
                 </p>
               </div>
@@ -259,7 +272,7 @@ export function BookingModal({
 
             <div className="flex items-center justify-between">
               <span className="text-sm font-semibold">Total Amount</span>
-              <span className="text-xl font-semibold text-[#6D4AFF]">
+              <span className="text-xl font-semibold text-brand-text">
                 ${totalAmount}
               </span>
             </div>
@@ -271,7 +284,10 @@ export function BookingModal({
             </Button>
             <Button
              
-              onClick={handlesubmit}
+              onClick={() => {
+                handlesubmit();
+                setOpen(false);
+              }}
               className="bg-[#6D4AFF] text-white hover:bg-[#5A3BD9]"
               
             >

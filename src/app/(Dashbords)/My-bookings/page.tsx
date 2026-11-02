@@ -171,7 +171,7 @@ const MyBookings = async () => {
 
       {data.length === 0 ? (
         <div className="py-20 text-center">
-          <p className="text-lg text-gray-500">No bookings found.</p>
+          <p className="text-lg text-muted-foreground">No bookings found.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

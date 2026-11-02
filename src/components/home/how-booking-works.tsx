@@ -70,7 +70,7 @@ export function HowBookingWorks() {
             key={step.number}
             className="group relative flex flex-col gap-3 rounded-2xl bg-card p-6 ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-[#6D4AFF]/30"
           >
-            <span className="flex size-12 items-center justify-center rounded-xl bg-[#6D4AFF]/10 text-[#6D4AFF] transition-colors duration-300 group-hover:bg-[#6D4AFF] group-hover:text-white">
+            <span className="flex size-12 items-center justify-center rounded-xl bg-[#6D4AFF]/10 text-brand-text transition-colors duration-300 group-hover:bg-[#6D4AFF] group-hover:text-white">
               <step.icon className="size-6" aria-hidden="true" />
             </span>
 
@@ -88,7 +88,7 @@ export function HowBookingWorks() {
 
             {index < bookingSteps.length - 1 && (
               <ArrowRight
-                className="absolute top-1/2 -right-[1.375rem] z-10 hidden size-5 -translate-y-1/2 text-[#6D4AFF] lg:block"
+                className="absolute top-1/2 -right-[1.375rem] z-10 hidden size-5 -translate-y-1/2 text-brand-text lg:block"
                 aria-hidden="true"
               />
             )}

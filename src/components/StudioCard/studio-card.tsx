@@ -55,7 +55,7 @@ function StudioCard({ studio }: { studio: Studio }) {
           <MapPin className="size-4 shrink-0" />
           {studio.location}
         </p>
-        <p className="mt-auto pt-2 text-lg font-semibold text-[#6D4AFF]">
+        <p className="mt-auto pt-2 text-lg font-semibold text-brand-text">
           ${studio.rate}
           <span className="text-sm font-normal text-muted-foreground"> / hr</span>
         </p>

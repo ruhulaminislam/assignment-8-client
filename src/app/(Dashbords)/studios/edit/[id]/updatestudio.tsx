@@ -35,6 +35,8 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { TStudio } from "@/lib/studios";
 import Image from "next/image";
+import { toast } from "@/components/ui/toast";
+import { redirect } from "next/navigation";
 
 const categories = [
   "Photo Studio",
@@ -62,7 +64,7 @@ function SectionHeading({
 }) {
   return (
     <div className="flex items-center gap-2 border-b border-border pb-3">
-      <Icon className="size-4 text-[#6D4AFF]" />
+      <Icon className="size-4 text-brand-text" />
       <h2 className="text-sm font-semibold tracking-wide text-foreground uppercase">
         {title}
       </h2>
@@ -137,12 +139,20 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
 
     const datas = await response.json();
     console.log(datas);
+    if(datas.modifiedCount > 0) {
+       
+      
+          toast.add({
+            type: "success",
+            description: "your  studio card  has been updated successfully.",
+          })
+          redirect("/my-listings");
+        }
   };
 
   return (
     <main
-      className="flex-1 px-4 py-10 sm:px-6 lg:px-8"
-      style={{ backgroundColor: "#F8F7FC" }}
+      className="flex-1 bg-canvas px-4 py-10 sm:px-6 lg:px-8"
     >
       <div className="mx-auto w-full max-w-4xl">
         {/* Page heading */}
@@ -163,7 +173,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
         </div>
 
         {/* Form card */}
-        <div className="mt-8 rounded-2xl bg-white p-6 shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border sm:p-8">
+        <div className="mt-8 rounded-2xl bg-card p-6 shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Studio Details */}
             <section className="space-y-5">
@@ -297,7 +307,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                   htmlFor="image-file"
                   className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#6D4AFF]/30 bg-[#6D4AFF]/5 px-6 py-10 text-center transition-colors hover:border-[#6D4AFF]/60 hover:bg-[#6D4AFF]/10"
                 >
-                  <ImagePlus className="size-8 text-[#6D4AFF]" />
+                  <ImagePlus className="size-8 text-brand-text" />
                   <span className="text-sm font-medium text-foreground">
                     Upload studio image
                   </span>
@@ -350,7 +360,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                         "flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors " +
                         (active
                           ? "border-[#6D4AFF] bg-[#6D4AFF] text-white"
-                          : "border-border bg-white text-muted-foreground hover:border-[#6D4AFF]/50 hover:text-[#6D4AFF]")
+                          : "border-border bg-card text-muted-foreground hover:border-[#6D4AFF]/50 hover:text-brand-text")
                       }
                     >
                       <Icon className="size-4" />

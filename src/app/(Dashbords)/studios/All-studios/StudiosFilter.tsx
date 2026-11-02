@@ -102,28 +102,29 @@ export default function StudiosFilter({
 
   return (
     <section
-      className="min-h-screen bg-[#F8F7FC] py-10"
-      style={{ backgroundColor: "#F8F7FC" }}
+      className="min-h-screen bg-canvas py-10"
     >
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* ---------- Search bar ---------- */}
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            type="text"
-            placeholder="Search studios by name or location..."
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            className="h-12 w-full pl-12 text-base"
-          />
+        {/* ---------- Full-width search bar ---------- */}
+        <div className="mx-auto mb-10 w-full max-w-3xl">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search studios by name or location..."
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              className="h-12 w-full pl-12 pr-8 text-sm rounded-xl border border-border bg-card focus:border-[#6D4AFF]/60 focus:outline-offset-2 focus:ring-2 focus:ring-[#6D4AFF]/30 transition-colors"
+            />
+          </div>
         </div>
 
         {/* ---------- Browse by category ---------- */}
-        <div className="mt-6">
-          <h2 className="mb-3 text-sm font-semibold text-foreground">
+        <div className="mt-2 mb-2">
+          <h2 className="text-sm font-semibold text-foreground tracking-tight">
             Browse by Category
           </h2>
-          <div className="flex flex-wrap gap-2 sm:gap-3">
+          <div className="mt-3 flex flex-wrap gap-2 sm:gap-3">
             {categories.map((cat) => {
               const isActive = category === cat;
               return (
@@ -132,10 +133,10 @@ export default function StudiosFilter({
                   variant={isActive ? "default" : "outline"}
                   onClick={() => handleCategoryClick(cat)}
                   className={cn(
-                    "h-9 rounded-lg px-4 text-sm font-medium transition-all",
+                    "h-9 rounded-lg px-4 text-sm font-medium transition-all duration-200",
                     isActive
                       ? "bg-[#6D4AFF] text-white shadow-[0_4px_14px_rgba(109,74,255,0.35)] hover:bg-[#5A3BD9]"
-                      : "border-border bg-white text-muted-foreground hover:border-[#6D4AFF]/40 hover:text-[#6D4AFF]"
+                      : "border-border bg-card text-muted-foreground hover:border-[#6D4AFF]/40 hover:text-brand-text hover:shadow-sm"
                   )}
                 >
                   {cat}
@@ -146,23 +147,26 @@ export default function StudiosFilter({
         </div>
 
         {/* ---------- Available Studios heading + sorting dropdown ---------- */}
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-xl font-semibold tracking-tight">
+            <h2 className="text-xl font-semibold tracking-tight text-foreground">
               Available Studios
             </h2>
-            <p className="mt-0.5 text-sm text-muted-foreground">
+            <p className="mt-1 text-sm text-muted-foreground">
               {resultCount} studio{resultCount === 1 ? "" : "s"} found
             </p>
           </div>
 
           <div className="flex items-center gap-2">
+            <span className="hidden text-xs font-medium text-muted-foreground sm:inline">
+              Sort by
+            </span>
             <Filter className="size-4 text-muted-foreground" />
             <Select value={sort} onValueChange={handleSortChange}>
-              <SelectTrigger className="h-9 w-44 rounded-lg border-border bg-white text-sm">
+              <SelectTrigger className="h-9 w-40 rounded-lg border border-border bg-card text-sm shadow-none hover:bg-[#6D4AFF]/5 transition-colors">
                 <SelectValue placeholder="Default Sorting" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-lg">
                 {sortOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -178,7 +182,7 @@ export default function StudiosFilter({
           {sortedStudios.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-[#6D4AFF]/10">
-                <Search className="size-8 text-[#6D4AFF]" />
+                <Search className="size-8 text-brand-text" />
               </div>
               <h3 className="text-lg font-semibold">No studios found</h3>
               <p className="mt-1 max-w-sm text-sm text-muted-foreground">

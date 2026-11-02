@@ -27,7 +27,7 @@ function CategoryCard({ name, image, href, className }: CategoryCardProps) {
           sizes="(max-width: 768px) 40vw, 18vw"
         />
       </div>
-      <p className="px-2 py-3 text-center text-sm font-medium transition-colors group-hover:text-[#6D4AFF]">
+      <p className="px-2 py-3 text-center text-sm font-medium transition-colors group-hover:text-brand-text">
         {name}
       </p>
     </Link>

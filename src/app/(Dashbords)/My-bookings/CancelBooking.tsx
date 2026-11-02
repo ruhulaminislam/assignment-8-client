@@ -1,5 +1,7 @@
   "use client"
 import { Button } from '@/components/ui/button'
+import { toast } from '@/components/ui/toast';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 type Booking = {
   _id: string;
@@ -17,7 +19,8 @@ type Booking = {
   status: string;
 };
 const CancelBooking = ({isPending,status,booking }:{isPending: boolean; status: string,booking:Booking}) => {
-    const handleCancelBooking=async()=>{
+  const router = useRouter()
+  const handleCancelBooking=async()=>{
     const respose=await fetch("http://localhost:5000/cancel-booking",{
         method:"PATCH",
         headers:{
@@ -26,7 +29,14 @@ const CancelBooking = ({isPending,status,booking }:{isPending: boolean; status: 
         body:JSON.stringify({id:booking._id,status:"Cancelled"})
     })
     const data=await respose.json()
-    console.log(data)
+    if(data.modifiedCount>0){
+       toast.add({
+            type: "warning",
+            description: "Booking has been cancelled.",
+          })
+          router.refresh()
+    }
+    
     }
   return (
     <div>
@@ -35,7 +45,7 @@ const CancelBooking = ({isPending,status,booking }:{isPending: boolean; status: 
          onClick={handleCancelBooking}
           variant="outline"
           disabled={!isPending}
-          className="w-full bg-[#6D4AFF] text-white hover:bg-[#5A3BD9] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
+          className="w-full bg-[#6D4AFF] text-white hover:bg-[#5A3BD9] disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
         >
           {isPending ? "Cancel Booking" : status === "Cancelled" ? "Cancelled" : "Cancel Booking"}
         </Button>

@@ -11,16 +11,23 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { toast } from "@/components/ui/toast"
 import { Trash2 } from "lucide-react"
+import { useRouter } from "next/navigation"
 const  StudioDlete = ({id}:{id:string}) => {
+  const router = useRouter()
    const deleteStudio = async () => {
     const response = await fetch(`http://localhost:5000/studios/${id}`, {
       method: "DELETE",
     })
     if (response.ok) {
-      console.log("Studio deleted successfully",response)}
+      toast .add({
+            type: "success",
+            description: "Studio has been deleted.",
+          })
+          router.refresh()
       
-  }
+  }}
   return (
     <div>
       
@@ -40,10 +47,11 @@ const  StudioDlete = ({id}:{id:string}) => {
             This action cannot be undone. This will permanently delete your
             Studio from our servers.
           </AlertDialogDescription>
+
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={deleteStudio} >Continue</AlertDialogAction>
+        <AlertDialogCancel onClick={deleteStudio}> Continue</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

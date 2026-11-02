@@ -20,7 +20,7 @@ export function StudioGallery({
     images.length === 1 ? [images[0], images[0]] : images;
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-border">
+    <div className="overflow-hidden rounded-2xl bg-card ring-1 ring-border">
       <Carousel opts={{ loop: true }}>
         <CarouselContent>
           {galleryImages.map((src, index) => (

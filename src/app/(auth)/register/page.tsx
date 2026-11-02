@@ -258,7 +258,7 @@ const GithubsignIn = async () => {
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-medium text-[#6D4AFF] hover:text-[#5A3BD9]"
+            className="font-medium text-brand-text hover:text-brand-text-hover"
           >
             Login
           </Link>

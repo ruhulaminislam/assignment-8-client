@@ -32,8 +32,7 @@ export default async function MyListingsPage() {
     console.log(listings)
   return (
     <main
-      className="flex-1 px-4 py-10 sm:px-6 lg:px-8"
-      style={{ backgroundColor: "#F8F7FC" }}
+      className="flex-1 bg-canvas px-4 py-10 sm:px-6 lg:px-8"
     >
       <div className="mx-auto grid w-full max-w-6xl grid-cols-[1fr_auto] items-center gap-x-6">
         {/* Page header */}
@@ -52,9 +51,9 @@ export default async function MyListingsPage() {
         </div>
 
         {/* Summary */}
-        <div className="inline-flex items-center gap-4 rounded-2xl bg-white p-5 shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
+        <div className="inline-flex items-center gap-4 rounded-2xl bg-card p-5 shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
           <span className="flex size-11 items-center justify-center rounded-xl bg-[#6D4AFF]/10">
-            <LayoutDashboard className="size-5 text-[#6D4AFF]" />
+            <LayoutDashboard className="size-5 text-brand-text" />
           </span>
           <div>
             <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
@@ -65,7 +64,7 @@ export default async function MyListingsPage() {
         </div>
 
         {/* Listings table */}
-        <div className="col-span-2 mt-6 overflow-hidden rounded-2xl bg-white shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
+        <div className="col-span-2 mt-6 overflow-hidden rounded-2xl bg-card shadow-[0_4px_24px_rgba(19,12,51,0.06)] ring-1 ring-border">
           <Table className="min-w-[760px]">
             <TableHeader>
               <TableRow className="hover:bg-transparent">
@@ -117,7 +116,7 @@ export default async function MyListingsPage() {
                     <TableCell>
                       <Badge
                         variant="secondary"
-                        className="bg-[#6D4AFF]/10 text-[#6D4AFF] hover:bg-[#6D4AFF]/10"
+                        className="bg-[#6D4AFF]/10 text-brand-text hover:bg-[#6D4AFF]/10"
                       >
                         {studio.category}
                       </Badge>
@@ -129,7 +128,7 @@ export default async function MyListingsPage() {
                     </TableCell>
 
                     {/* Rate */}
-                    <TableCell className="font-semibold text-[#6D4AFF]">
+                    <TableCell className="font-semibold text-brand-text">
                       ${studio.rate}
                       <span className="text-xs font-normal text-muted-foreground">
                         {" "}
@@ -143,10 +142,10 @@ export default async function MyListingsPage() {
                     {/* Actions */}
                     <TableCell className="pr-5">
                       <div className="flex items-center justify-end gap-2">
-                       <Link href={`/my-listings/${studio._id}`} > <Button
+                       <Link href={`/studios/edit/${studio._id}`} > <Button
                           type="button"
                           size="sm"
-                          className="h-8 gap-1.5 border border-[#6D4AFF]/40 bg-[#6D4AFF]/10 px-3 text-[#6D4AFF] hover:bg-[#6D4AFF] hover:text-white"
+                          className="h-8 gap-1.5 border border-[#6D4AFF]/40 bg-[#6D4AFF]/10 px-3 text-brand-text hover:bg-[#6D4AFF] hover:text-white"
                         >
                           <Pencil className="size-3.5" />
                           Update

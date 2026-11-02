@@ -1,5 +1,5 @@
 
-const statusOrder = ["Pending", "Confirmed", "Completed", "Cancelled"];
+const statusOrder = ["pending", "Confirmed", "Completed", "Cancelled"];
 export default function ProgressTracker({ status }: { status: string }) {
   const isCancelled = status === "Cancelled";
   const currentIndex = statusOrder.indexOf(status);
@@ -19,7 +19,7 @@ export default function ProgressTracker({ status }: { status: string }) {
                   ? isCancelled
                     ? "border-red-600 bg-red-600 text-white"
                     : "border-primary bg-primary text-white"
-                  : "border-gray-300 text-gray-400"
+                  : "border-border text-muted-foreground"
               }`}
             >
               {index + 1}
@@ -31,7 +31,7 @@ export default function ProgressTracker({ status }: { status: string }) {
                   ? isCancelled
                     ? "font-semibold text-red-600"
                     : "font-semibold text-primary"
-                  : "text-gray-400"
+                  : "text-muted-foreground"
               }`}
             >
               {step}
