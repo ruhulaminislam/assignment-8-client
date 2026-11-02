@@ -63,7 +63,7 @@ import { TStudio } from "@/lib/studios"
 // ]
 
 export async function FeaturedStudios() {
-    const res=await fetch("http://localhost:5000/featured-studios")
+    const res=await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/featured-studios`)
     const featuredStudios:TStudio[] = await res.json()
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">

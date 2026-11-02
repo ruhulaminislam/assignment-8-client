@@ -30,6 +30,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
+import { GetTokenFormClient } from "@/lib/GetTokenFormClient";
 
 /* Duration choices shown in the dropdown (in hours). */
 const durationOptions = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -93,10 +94,12 @@ export function BookingModal({
       })
     : "Select a booking date";
      const handlesubmit = async() => {
-      const res =await fetch("http://localhost:5000/bookings",{
+       const token = await GetTokenFormClient();
+      const res =await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings`,{
         method:"POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           studioId: id,

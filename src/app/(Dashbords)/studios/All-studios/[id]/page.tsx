@@ -111,7 +111,7 @@ export default async function DetailsPage({
   let studio: TStudio | null = null;
 
   try {
-    const response = await fetch(`http://localhost:5000/studios/${id}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/studios/${id}`);
 
     if (response.ok) {
       studio = await response.json();

@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import * as React from "react"
+import Link from "next/link"
+
 
 const slides = [
   {
@@ -101,7 +103,7 @@ export function HeroSlider() {
                         className="bg-[#6D4AFF] text-white hover:bg-[#5A3BD9]"
                         size="lg"
                       >
-                        Explore Studios
+                        <Link href="/studios/All-studios">Explore Studios</Link>
                       </Button>
                       <Button
                         variant="outline"

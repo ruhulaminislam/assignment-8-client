@@ -89,7 +89,7 @@ const GithubsignIn = async () => {
             <Aperture className="size-6 text-white" />
           </span>
 
-          <h1 className="mt-4 text-2xl font-semibold tracking-tight">
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight">
             Create your account
           </h1>
 

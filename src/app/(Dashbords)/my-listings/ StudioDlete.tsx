@@ -12,13 +12,18 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/toast"
+import { GetTokenFormClient } from "@/lib/GetTokenFormClient"
 import { Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 const  StudioDlete = ({id}:{id:string}) => {
   const router = useRouter()
    const deleteStudio = async () => {
-    const response = await fetch(`http://localhost:5000/studios/${id}`, {
+    const token = await GetTokenFormClient();
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/studios/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
     })
     if (response.ok) {
       toast .add({

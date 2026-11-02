@@ -35,6 +35,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
 import { redirect } from "next/navigation";
+import { GetTokenFormClient } from "@/lib/GetTokenFormClient";
 
 const categories = [
   "Photo Studio",
@@ -100,7 +101,7 @@ export default function AddStudioPage() {
     const formData = new FormData();
     formData.append("image", file);
 
-    const response = await fetch("http://localhost:5000/upload-image", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/upload-image`, {
       method: "POST",
       body: formData,
     });
@@ -119,10 +120,11 @@ export default function AddStudioPage() {
     const Data = Object.fromEntries(formData.entries());
 
     const { image, imageUrl: formImageUrl, ...studioData } = Data;
-
-    const response = await fetch("http://localhost:5000/add-studios", {
+      const token = await GetTokenFormClient();
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/add-studios`, {
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
       method: "POST",
       body: JSON.stringify({

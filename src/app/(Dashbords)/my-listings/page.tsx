@@ -28,7 +28,7 @@ export default async function MyListingsPage() {
 })
     const email=session?.user?.email
     console.log(email)
-    const res=await fetch(`http://localhost:5000/my-listings/${email}`)
+    const res=await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/my-listings/${email}`)
     const listings: TStudio[] = await res.json()
     console.log(listings)
   return (

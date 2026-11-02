@@ -102,7 +102,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
     const formData = new FormData();
     formData.append("image", file);
 
-    const response = await fetch("http://localhost:5000/upload-image", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/upload-image`, {
       method: "POST",
       body: formData,
     });
@@ -122,7 +122,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
 
     const { image, imageUrl: formImageUrl, ...studioData } = Data;
 
-    const response = await fetch(`http://localhost:5000/studios-update/${data._id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/studios-update/${data._id}`, {
       headers: {
         "Content-Type": "application/json",
       },

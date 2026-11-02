@@ -4,7 +4,7 @@ import StudiosFilter from './StudiosFilter'
 
 const AllStudios = async ({ searchParams }: { searchParams: Promise<{ category?: string }> }) => {
   const { category } = await searchParams;
-    const res = await fetch('http://localhost:5000/all-studios')
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios`)
     const allStudios:TStudio[] = await res.json()
 
    

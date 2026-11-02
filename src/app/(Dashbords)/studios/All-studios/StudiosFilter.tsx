@@ -129,7 +129,7 @@ export default function StudiosFilter({
 
         {/* ---------- Browse by category ---------- */}
         <div className="mt-2 mb-2">
-          <h2 className="text-sm font-semibold text-foreground tracking-tight">
+          <h2 className="text-3xl font-semibold text-foreground tracking-tight">
             Browse by Category
           </h2>
           <div className="mt-3 flex flex-wrap gap-2 sm:gap-3">
@@ -157,7 +157,7 @@ export default function StudiosFilter({
         {/* ---------- Available Studios heading + sorting dropdown ---------- */}
         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-xl font-semibold tracking-tight text-foreground">
+            <h2 className="text-3xl font-semibold tracking-tight text-foreground">
               Available Studios
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">

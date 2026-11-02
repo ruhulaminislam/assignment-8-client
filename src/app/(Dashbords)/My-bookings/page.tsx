@@ -156,7 +156,7 @@ const MyBookings = async () => {
   }
 
   const res = await fetch(
-    `http://localhost:5000/my-bookings/${encodeURIComponent(email)}`,
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/my-bookings/${encodeURIComponent(email)}`,
     {
       cache: "no-store",
     }

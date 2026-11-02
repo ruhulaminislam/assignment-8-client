@@ -49,17 +49,18 @@ const itemClass =
 
 // ---------- ছোট Component ----------
 function NavLink({ href, label }: { href: string; label: string }) {
-  const isActive = usePathname() === href
+  const isActive = usePathname() === href;
+  const isSectionLink = href.startsWith("/#");
 
-  return (
-    <Link
-      href={href}
-      aria-current={isActive ? "page" : undefined}
-      className={cn(
-        "relative whitespace-nowrap py-2 text-sm font-medium transition-colors md:text-[15px]",
-        isActive ? "text-brand-text" : "text-muted-foreground hover:text-brand-text"
-      )}
-    >
+  const className = cn(
+    "relative whitespace-nowrap py-2 text-sm font-medium transition-colors md:text-[15px]",
+    isActive
+      ? "text-brand-text"
+      : "text-muted-foreground hover:text-brand-text"
+  );
+
+  const content = (
+    <>
       {label}
       <span
         aria-hidden="true"
@@ -68,8 +69,18 @@ function NavLink({ href, label }: { href: string; label: string }) {
           isActive ? "bg-[#6D4AFF]" : "bg-transparent"
         )}
       />
+    </>
+  );
+
+  return isSectionLink ? (
+    <a href={href} className={className}>
+      {content}
+    </a>
+  ) : (
+    <Link href={href} className={className}>
+      {content}
     </Link>
-  )
+  );
 }
 
 function UserAvatar({ user, size }: { user: any; size?: "sm" }) {

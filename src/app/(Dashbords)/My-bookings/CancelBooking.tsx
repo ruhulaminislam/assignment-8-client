@@ -21,7 +21,7 @@ type Booking = {
 const CancelBooking = ({isPending,status,booking }:{isPending: boolean; status: string,booking:Booking}) => {
   const router = useRouter()
   const handleCancelBooking=async()=>{
-    const respose=await fetch("http://localhost:5000/cancel-booking",{
+    const respose=await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/cancel-booking`,{
         method:"PATCH",
         headers:{
             "Content-Type":"application/json"

@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 
 const page = async({ params }: { params: { id: string } }) => {
   const {id }=await params
-  const response = await fetch(`http://localhost:5000/studios/${id}`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/studios/${id}`)
   
   if (!response.ok) {
     notFound()
