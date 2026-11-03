@@ -209,7 +209,7 @@ const MyBookings = async () => {
   </p>
 
   <Button   className="mt-6">
-    <Link href="/studios">
+    <Link href="/studios/All-studios">
       Explore Studios
     </Link>
   </Button>
