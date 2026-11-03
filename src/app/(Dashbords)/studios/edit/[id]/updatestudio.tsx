@@ -37,6 +37,7 @@ import { TStudio } from "@/lib/studios";
 import Image from "next/image";
 import { toast } from "@/components/ui/toast";
 import { redirect } from "next/navigation";
+import { GetTokenFormClient } from "@/lib/GetTokenFormClient";
 
 const categories = [
   "Photo Studio",
@@ -73,11 +74,7 @@ function SectionHeading({
 }
 
 export default function UpdateStudioPage({data}: {data:TStudio}) {
-  const { data: session } = authClient.useSession();
-  const user = session?.user;
-  if(user?.email !==data.useremail){
-    return "anauthenticated user"
-  }
+
   
   
 
@@ -85,6 +82,11 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>( data.amenities ??[]);
   const [imagePreview, setImagePreview] = useState<string>( data.imageUrl || "");
   const [imageUrl, setImageUrl] = useState<string>(data.imageUrl || "");
+    const { data: session } = authClient.useSession();
+  const user = session?.user;
+  if(user?.email !==data.useremail){
+    return "anauthenticated user"
+  }
   
   const toggleAmenity = (label: string) => {
     setSelectedAmenities((prev) =>
@@ -124,14 +126,16 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
 
     const formData = new FormData(e.currentTarget);
     const Data = Object.fromEntries(formData.entries());
-
+    const token = await GetTokenFormClient();
     const { image, imageUrl: formImageUrl, ...studioData } = Data;
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/studios-update/${data._id}`, {
+        method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
-      method: "PATCH",
+   
       body: JSON.stringify({
         ...studioData,
         category,
