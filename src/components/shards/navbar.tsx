@@ -40,7 +40,7 @@ const menuItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Add New Studio", href: "/studios/add-studio", icon: PlusCircle },
   { label: "My Studio Listings", href: "/my-listings", icon: Building2 },
-  { label: "My Bookings", href: "/My-bookings", icon: CalendarCheck },
+  { label: "My Bookings", href: "/my-bookings", icon: CalendarCheck },
 ]
 
 // Dropdown Item-এর সব style এক জায়গায়

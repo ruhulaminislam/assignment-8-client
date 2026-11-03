@@ -75,6 +75,11 @@ function SectionHeading({
 export default function UpdateStudioPage({data}: {data:TStudio}) {
   const { data: session } = authClient.useSession();
   const user = session?.user;
+  if(user?.email !==data.useremail){
+    return "anauthenticated user"
+  }
+  
+  
 
   const [category, setCategory] = useState<string>(data.category || "");
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>( data.amenities ??[]);
@@ -132,8 +137,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
         category,
         amenities: selectedAmenities,
         imageUrl,
-        username: user?.name,
-        useremail: user?.email,
+      
       }),
     });
 
@@ -399,7 +403,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                     id="host-name"
                     name="hostName"
                     type="text"
-                    value={user?.name ?? ""}
+                    value={data?.username ?? ""}
                     readOnly
                     disabled
                     placeholder="Loading..."
@@ -412,7 +416,7 @@ export default function UpdateStudioPage({data}: {data:TStudio}) {
                     id="host-email"
                     name="hostEmail"
                     type="email"
-                    value={user?.email ?? ""}
+                    value={data?.useremail ?? ""}
                     readOnly
                     disabled
                     placeholder="Loading..."

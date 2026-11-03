@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/toast";
 import { GetTokenFormClient } from "@/lib/GetTokenFormClient";
+import { authClient } from "@/lib/auth-client";
 
 /* Duration choices shown in the dropdown (in hours). */
 const durationOptions = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -46,7 +47,7 @@ export function BookingModal({
   className,
   id,
   userName,
-  userEmail
+  userEmail,
 }: {
   studioTitle: string;
   studioImage: string;
@@ -56,8 +57,7 @@ export function BookingModal({
   userName: string;
   userEmail: string;
 }) {
-
-
+ 
   const [open, setOpen] = useState(false);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
 
@@ -67,6 +67,14 @@ export function BookingModal({
   const [duration, setDuration] = useState("3");
 
   // --- Calculations (they simply re-run on every render) ---
+  const { data: session, isPending } = authClient.useSession()
+
+  if (isPending) return <div className="loading"></div>
+
+  const user = session?.user
+  const name=user?.name;
+  const email=user?.email
+
   const durationHours = Number(duration);
   const ratePerHour = Number(hourlyRate);
   const totalAmount = ratePerHour * durationHours;
@@ -111,8 +119,8 @@ export function BookingModal({
           endDate: endDate.toISOString(),
           duration: durationHours,
           totalAmount: totalAmount,
-          userName: userName,
-          userEmail: userEmail,
+          userName: name,
+          userEmail: email,
           status: "pending"
         })
       })
@@ -126,9 +134,11 @@ if (res.ok && data.insertedId) {
 } else {
   toast.add({
     type: "warning",
-    description: data.message,
+    description: data.message ?? "Booking has not confime" ,
   });
 }
+
+
        }
      
   return (

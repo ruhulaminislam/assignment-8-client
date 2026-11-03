@@ -20,49 +20,63 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = async(e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    setError("");
+  setError("");
 
-    const formData = new FormData(e.currentTarget);
-    const userData = Object.fromEntries(formData.entries())as{email: string, password: string};
+  const formData = new FormData(e.currentTarget);
+  const userData = Object.fromEntries(formData.entries()) as {
+    email: string;
+    password: string;
+  };
 
-    console.log(userData);
-const {data,error} = await authClient.signIn.email({
-  ...userData,
-  rememberMe: true,
-});
+  console.log(userData);
+
+  const { data, error } = await authClient.signIn.email({
+    ...userData,
+    rememberMe: true,
+  });
+
   if (data) {
     toast.add({
-            type: "success",
-            description: "Login successful.",
-          })
-  }
-  if (error) {
-    toast.add({
-            type: "warning",
-            description: "login failed. Please try again.",
-          })
-  return;
-}
+      type: "success",
+      description: "Login successful.",
+    });
 
     const callbackUrl = searchParams.get("callbackUrl") || "/";
 
-    // Only allow internal paths.
-    const safeRedirect = callbackUrl.startsWith("/") &&
-      !callbackUrl.startsWith("//")
+    // Only allow internal paths
+    const safeRedirect =
+      callbackUrl.startsWith("/") && !callbackUrl.startsWith("//")
+        ? callbackUrl
+        : "/";
+
+    router.replace(safeRedirect);
+  }
+
+  if (error) {
+    toast.add({
+      type: "warning",
+      description: "Login failed. Please try again.",
+    });
+    return;
+  }
+};
+
+const GooglesignIn = async () => {
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+
+  const safeRedirect =
+    callbackUrl.startsWith("/") && !callbackUrl.startsWith("//")
       ? callbackUrl
       : "/";
 
-    router.push(safeRedirect);
-  };
-  const GooglesignIn = async () => {
-  const data = await authClient.signIn.social({
+  await authClient.signIn.social({
     provider: "google",
+    callbackURL: safeRedirect,
   });
 };
-
   return (
     <main className="flex flex-1 items-center justify-center px-4 py-12 sm:px-6">
       <div className="w-full max-w-lg rounded-2xl bg-card p-6 ring-1 ring-border sm:p-8">

@@ -1,3 +1,4 @@
+
 import type { ReactNode, SVGProps } from "react"
 import Link from "next/link"
 import { Aperture } from "lucide-react"
@@ -17,18 +18,18 @@ type SocialLink = {
 
 const quickLinks: NavLink[] = [
   { label: "Home", href: "/" },
-  { label: "Explore Studios", href: "/studios" },
+  { label: "Explore Studios", href: "studios/All-studios" },
   { label: "About Us", href: "#about-us" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "Contact Us", href: "/contact" },
 ]
 
 const popularCategories: NavLink[] = [
-  { label: "Photography Studios", href: "/studios?category=photo" },
-  { label: "Podcast Studios", href: "/studios?category=podcast" },
-  { label: "Music Recording Studios", href: "/studios?category=music" },
-  { label: "Film Production Studios", href: "/studios?category=film" },
-  { label: "Art Workshops", href: "/studios?category=art" },
+  { label: "Photography Studios", href: "/studios/All-studios?category=Photo+Studio" },
+  { label: "Podcast Studios", href: "/studios/All-studios?category=Podcast+Lounge" },
+  { label: "Music Recording Studios", href: "/studios/All-studios?category=Music+Suite" },
+  { label: "Film Production Studios", href: "/studios/All-studios?category=Film+Stage" },
+  { label: "Art Workshops", href: "/studios/All-studios?category=Workshop" },
 ]
 
 function FacebookIcon(props: SVGProps<SVGSVGElement>) {
@@ -89,27 +90,44 @@ function LinkedinIcon(props: SVGProps<SVGSVGElement>) {
 /** Modern X logo (not the legacy Twitter bird) */
 function XIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      {...props}
+    >
       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   )
 }
 
 const socialLinks: SocialLink[] = [
-  { label: "Facebook", href: "https://www.facebook.com", icon: FacebookIcon },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com",
+    icon: FacebookIcon,
+  },
   {
     label: "Instagram",
     href: "https://www.instagram.com",
     icon: InstagramIcon,
   },
-  { label: "LinkedIn", href: "https://www.linkedin.com", icon: LinkedinIcon },
-  { label: "X", href: "https://x.com", icon: XIcon },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com",
+    icon: LinkedinIcon,
+  },
+  {
+    label: "X",
+    href: "https://x.com",
+    icon: XIcon,
+  },
 ]
 
 function ColumnHeading({ children }: { children: ReactNode }) {
   return (
     <div>
-      <h3 className="text-sm font-semibold tracking-wider text-white uppercase">
+      <h3 className="text-sm font-semibold tracking-wider text-foreground uppercase">
         {children}
       </h3>
       <span
@@ -122,7 +140,7 @@ function ColumnHeading({ children }: { children: ReactNode }) {
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t-4 border-[#6D4AFF] bg-[#191035] text-white/70">
+    <footer className="mt-auto border-t-4 border-[#6D4AFF] bg-card text-muted-foreground">
       <div className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12">
           {/* Brand */}
@@ -131,11 +149,12 @@ export function Footer() {
               <span className="flex size-9 items-center justify-center rounded-lg bg-[#6D4AFF]">
                 <Aperture className="size-5 text-white" aria-hidden="true" />
               </span>
-              <span className="text-xl font-semibold tracking-tight text-white">
+              <span className="text-xl font-semibold tracking-tight text-foreground">
                 StudioSpace
               </span>
             </Link>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
+
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               StudioSpace connects creators with beautifully designed studios
               and workspaces — so every idea finds the right place to come to
               life.
@@ -150,7 +169,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex size-9 items-center justify-center rounded-lg bg-white/10 text-white transition-colors duration-300 hover:bg-[#6D4AFF]"
+                  className="flex size-9 items-center justify-center rounded-lg bg-muted text-foreground transition-colors duration-300 hover:bg-[#6D4AFF] hover:text-white"
                 >
                   <social.icon className="size-4" />
                 </a>
@@ -160,13 +179,16 @@ export function Footer() {
 
           {/* Quick Navigation */}
           <div className="lg:col-span-2">
-            <ColumnHeading>Quick Links</ColumnHeading>
+           
+                <ColumnHeading >Quick Links</ColumnHeading>
+            
+          
             <ul className="mt-4 space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/70 transition-colors duration-300 hover:text-white"
+                    className="text-sm text-muted-foreground transition-colors duration-300 hover:text-foreground"
                   >
                     {link.label}
                   </Link>
@@ -183,7 +205,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/70 transition-colors duration-300 hover:text-white"
+                    className="text-sm text-muted-foreground transition-colors duration-300 hover:text-foreground"
                   >
                     {link.label}
                   </Link>
@@ -195,17 +217,19 @@ export function Footer() {
           {/* Newsletter */}
           <div className="lg:col-span-3">
             <ColumnHeading>Stay in the Creative Loop</ColumnHeading>
-            <p className="mt-4 text-sm leading-relaxed text-white/70">
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               New studios, creative tips, and exclusive offers — straight to
               your inbox, no spam.
             </p>
+
             <div className="mt-4 flex flex-col gap-2 sm:flex-row lg:flex-col xl:flex-row">
               <Input
                 type="email"
                 placeholder="Enter your email address"
                 aria-label="Email address"
-                className="h-10 flex-1 border-white/15 bg-white/5 text-white placeholder:text-white/50 focus-visible:border-[#6D4AFF] focus-visible:ring-[#6D4AFF]/40"
+                className="h-10 flex-1 border-input bg-background text-foreground placeholder:text-muted-foreground focus-visible:border-[#6D4AFF] focus-visible:ring-[#6D4AFF]/40"
               />
+
               <Button
                 type="button"
                 className="h-10 bg-[#F4A340] px-4 text-[#191035] hover:bg-[#ffb04a]"
@@ -217,20 +241,22 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row">
-          <p className="text-sm text-white/60">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
+          <p className="text-sm text-muted-foreground">
             © 2026 StudioSpace. All rights reserved.
           </p>
+
           <div className="flex items-center gap-6">
             <Link
               href="/terms"
-              className="text-sm text-white/60 transition-colors duration-300 hover:text-white"
+              className="text-sm text-muted-foreground transition-colors duration-300 hover:text-foreground"
             >
               Terms &amp; Conditions
             </Link>
+
             <Link
               href="/privacy"
-              className="text-sm text-white/60 transition-colors duration-300 hover:text-white"
+              className="text-sm text-muted-foreground transition-colors duration-300 hover:text-foreground"
             >
               Privacy Policy
             </Link>
